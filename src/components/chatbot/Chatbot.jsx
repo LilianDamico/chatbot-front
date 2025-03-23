@@ -5,16 +5,15 @@ import "./Chatbot.css";
 const Chatbot = () => {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
-  const [interactionCount, setInteractionCount] = useState(0);
-  const [showReport, setShowReport] = useState(false);
+  const [perguntas, setPerguntas] = useState([]);
+  const [respostas, setRespostas] = useState([]);
 
   const sendMessage = async () => {
-    if (!input.trim() || interactionCount >= 3) return;
+    if (!input.trim() || perguntas.length >= 3) return;
 
     const userMessage = { sender: "Usuário", text: input };
-    const updatedMessages = [...messages, userMessage];
-    setMessages(updatedMessages);
-    setInput("");
+    setMessages((prev) => [...prev, userMessage]);
+    setPerguntas((prev) => [...prev, input]);
 
     try {
       const response = await fetch("https://chatbot-back-p11b.onrender.com/perguntar", {
@@ -25,37 +24,49 @@ const Chatbot = () => {
 
       const data = await response.json();
       const botMessage = { sender: "Chatbot", text: data.resposta };
-
-      const newMessages = [...updatedMessages, botMessage];
-      setMessages(newMessages);
-      setInteractionCount((prev) => prev + 1);
-
-      if (interactionCount + 1 === 3) {
-        setShowReport(true);
-      }
+      setMessages((prev) => [...prev, botMessage]);
+      setRespostas((prev) => [...prev, data.resposta]);
     } catch (error) {
       const errorMessage = {
         sender: "Chatbot",
         text: "❌ Erro ao se comunicar com o servidor.",
       };
-      setMessages((prevMessages) => [...prevMessages, errorMessage]);
+      setMessages((prev) => [...prev, errorMessage]);
     }
+
+    setInput("");
   };
 
   const handleKeyDown = (e) => {
     if (e.key === "Enter") sendMessage();
   };
 
-  const gerarRelatorio = () => {
-    let conteudo = "<html><head><title>Relatório do Chatbot</title></head><body>";
-    conteudo += "<h2>Relatório - Chatbot de Logística</h2>";
-    for (let i = 0; i < messages.length; i++) {
-      conteudo += `<p><strong>${messages[i].sender}:</strong> ${messages[i].text}</p>`;
-    }
-    conteudo += "</body></html>";
+  const imprimirRelatorio = () => {
+    const relatorioHTML = `
+      <html>
+        <head>
+          <title>Relatório do Chatbot</title>
+          <style>
+            body { font-family: Arial, sans-serif; padding: 20px; }
+            h2 { color: #003366; }
+            .bloco { margin-bottom: 20px; }
+            .bloco strong { display: block; margin-bottom: 5px; }
+          </style>
+        </head>
+        <body>
+          <h2>Relatório do Chatbot - AppLog</h2>
+          ${perguntas.map((p, i) => `
+            <div class="bloco">
+              <strong>Pergunta ${i + 1}:</strong> ${p}
+              <strong>Resposta:</strong> ${respostas[i]}
+            </div>
+          `).join("")}
+        </body>
+      </html>
+    `;
 
     const novaJanela = window.open("", "_blank");
-    novaJanela.document.write(conteudo);
+    novaJanela.document.write(relatorioHTML);
     novaJanela.document.close();
     novaJanela.print();
   };
@@ -75,15 +86,15 @@ const Chatbot = () => {
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={handleKeyDown}
-          disabled={interactionCount >= 3}
+          disabled={perguntas.length >= 3}
         />
-        <button onClick={sendMessage} disabled={interactionCount >= 3}>
+        <button onClick={sendMessage} disabled={perguntas.length >= 3}>
           Enviar
         </button>
       </div>
-      {showReport && (
-        <button className="relatorio-btn" onClick={gerarRelatorio}>
-          📄 Gerar Relatório
+      {perguntas.length === 3 && (
+        <button onClick={imprimirRelatorio} className="relatorio-btn">
+          Gerar Relatório
         </button>
       )}
     </div>

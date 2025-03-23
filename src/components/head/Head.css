@@ -1,0 +1,25 @@
+.head-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+  height: 220px;
+  background-color: rgb(0, 0, 50);
+  border-bottom: 2px solid greenyellow;
+  box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.6);
+}
+
+.logo img {
+  width: 200px;
+  height: 200px;
+  border-radius: 100px;
+}
+
+h1 {
+    display: flex;
+    align-items: center;
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: white;
+    margin-right: 400px;
+}

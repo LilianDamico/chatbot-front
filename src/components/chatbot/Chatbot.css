@@ -1,5 +1,6 @@
 .chat-container {
-    width: 400px;
+    width: 900px;
+    height: 480px;
     margin: 20px auto;
     padding: 20px;
     border: 2px solid #007bff;
@@ -8,7 +9,7 @@
   }
   
   .chat-box {
-    height: 300px;
+    height: 250px;
     overflow-y: auto;
     padding: 10px;
     border: 1px solid #ccc;
@@ -42,6 +43,7 @@
   
   button {
     padding: 10px;
+    margin: 10px;
     background-color: #007bff;
     color: white;
     border: none;
@@ -54,7 +56,7 @@
   }
   
   .relatorio-btn {
-    margin-top: 15px;
+    margin-top: 20px;
     padding: 10px 20px;
     background-color: #003366;
     color: #fff;

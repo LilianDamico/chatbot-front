@@ -13,7 +13,7 @@ const Chatbot = () => {
     setMessages([...messages, userMessage]);
 
     try {
-      const response = await fetch("https://chatbot-back-p11b.onrender.com/", {
+      const response = await fetch("https://chatbot-back-p11b.onrender.com/perguntar", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ message: "Sua pergunta aqui" }),

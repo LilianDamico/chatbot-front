@@ -16,7 +16,7 @@ const Chatbot = () => {
     setPerguntas((prev) => [...prev, input]);
 
     try {
-      const response = await fetch("https://chatbot-back-p11b.onrender.com/perguntar", {
+      const response = await fetch("https://chatbot-back-p11b.onrender.com/chatbot", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ pergunta: input }),

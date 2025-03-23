@@ -16,7 +16,7 @@ const Chatbot = () => {
       const response = await fetch("https://chatbot-back-p11b.onrender.com/", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: input }),
+        body: JSON.stringify({ message: "Sua pergunta aqui" }),
       });
 
       const data = await response.json();
